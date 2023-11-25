@@ -1,4 +1,4 @@
-package fr.teama.transactionservice.repository;
+package fr.teama.transactionservice.repository.jpa;
 
 import fr.teama.transactionservice.models.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
