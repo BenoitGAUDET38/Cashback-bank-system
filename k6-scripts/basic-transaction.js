@@ -4,7 +4,7 @@ import { sleep, check } from 'k6';
 export let options = {
     stages: [
         { duration: '1m', target: 1000 }, // Ramp up to 100 users in 1 minute
-        { duration: '3m', target: 1000 }, // Stay at 100 users for 5 minutes
+        { duration: '4m', target: 1000 }, // Stay at 100 users for 5 minutes
         // { duration: '1m', target: 0 },   // Ramp down to 0 users in 1 minute
     ],
 };
@@ -26,7 +26,7 @@ export default function (setupData) {
     let randomUserId = Math.floor(Math.random() * numberOfUsers);
     let user = setupData[randomUserId];
 
-    let url = 'http://localhost:3000/api/transaction/pay';
+    let url = 'http://localhost:80/api/transaction/pay';
     let payload = {
         cardNumber: user.bankAccount.card.cardNumber,
         cvv: user.bankAccount.card.cvv,

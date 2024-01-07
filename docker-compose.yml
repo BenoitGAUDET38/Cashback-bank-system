@@ -13,8 +13,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.30'
-          memory: 200M
+          cpus: '0.50'
+          memory: 300M
 
   # SERVICES
 
@@ -31,8 +31,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '1'
-          memory: 500M
+          cpus: '0.3'
+          memory: 200M
 
   load-balancer:
     image: "nginx:latest"
@@ -44,6 +44,11 @@ services:
     depends_on:
       - transaction-service
       - transaction-service-redundancy
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 300M
 
   transaction-service-redundancy:
     image: "newbank/transaction-service"
@@ -55,6 +60,11 @@ services:
       - "7001:8080"
     depends_on:
       - postgres-transaction
+    deploy:
+      resources:
+        limits:
+          cpus: '0.3'
+          memory: 200M
 
   cashback-service:
     image: "newbank/cashback-service"
@@ -69,8 +79,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.30'
-          memory: 200M
+          cpus: '0.50'
+          memory: 300M
 
   account-service:
     image: "newbank/account-service"
@@ -87,8 +97,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '1'
-          memory: 500M
+          cpus: '0.50'
+          memory: 300M
 
   affiliated-store-service:
     image: "newbank/affiliated-store-service"
@@ -103,8 +113,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.30'
-          memory: 200M
+          cpus: '0.50'
+          memory: 300M
 
   # DATABASES
 
@@ -126,8 +136,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.30'
-          memory: 200M
+          cpus: '0.80'
+          memory: 500M
 
   postgres-transaction-slave:
     image: 'bitnami/postgresql:latest'
@@ -151,8 +161,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.30'
-          memory: 200M
+          cpus: '0.50'
+          memory: 300M
 
   postgres-cashback:
     image: 'bitnami/postgresql:latest'
@@ -172,8 +182,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.30'
-          memory: 200M
+          cpus: '0.50'
+          memory: 300M
 
   postgres-cashback-slave:
     image: 'bitnami/postgresql:latest'
@@ -197,8 +207,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.30'
-          memory: 200M
+          cpus: '0.50'
+          memory: 300M
 
   postgres-account:
     image: 'bitnami/postgresql:latest'
@@ -218,8 +228,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.30'
-          memory: 200M
+          cpus: '0.50'
+          memory: 300M
 
   postgres-account-slave:
     image: 'bitnami/postgresql:latest'
@@ -243,8 +253,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.30'
-          memory: 200M
+          cpus: '0.50'
+          memory: 300M
 
   postgres-affiliated-store:
     image: postgres:15.2
@@ -259,8 +269,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.30'
-          memory: 200M
+          cpus: '0.50'
+          memory: 300M
 
     # EXTERNAL SERVICES
 
@@ -272,8 +282,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.30'
-          memory: 200M
+          cpus: '0.50'
+          memory: 300M
 
   external-mid-interpreter-mock-service:
     image: "newbank/external-mid-interpreter-mock-service"
@@ -283,8 +293,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.30'
-          memory: 200M
+          cpus: '0.50'
+          memory: 300M
 
   external-mastercard-mock-service:
     image: "newbank/external-mastercard-mock-service"
@@ -294,8 +304,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.30'
-          memory: 200M
+          cpus: '0.50'
+          memory: 300M
 
   external-decathlon-mock-service:
     image: "newbank/external-decathlon-mock-service"
@@ -305,8 +315,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.30'
-          memory: 200M
+          cpus: '0.50'
+          memory: 300M
 
   external-carrefour-mock-service:
     image: "newbank/external-carrefour-mock-service"
@@ -316,5 +326,5 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.30'
-          memory: 200M
+          cpus: '0.50'
+          memory: 300M

@@ -48,6 +48,9 @@ public class TransactionController {
     @GetMapping
     public ResponseEntity<List<Transaction>> getTransaction() {
         LoggerHelper.logInfo("Request received to get all transactions");
+        for (int i = 0; i < 100; i++) {
+            LoggerHelper.logWarn("Ayoub ca marche, donc je ne sais pas ce que tu veux de plus  " + i);
+        }
         return ResponseEntity.ok(transactionManager.getTransactions());
     }
 }
