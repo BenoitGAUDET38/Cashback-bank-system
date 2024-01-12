@@ -22,12 +22,15 @@ services:
     image: "newbank/transaction-service"
     restart: always
     environment:
-      - POSTGRES_HOST=postgres-transaction:5432
-      - POSTGRESQL_DATABASE=database-transaction
+      - POSTGRES_HOST_TRANSACTION=postgres-transaction:5432
+      - POSTGRESQL_DATABASE_TRANSACTION=database-transaction
+      - POSTGRES_HOST_ACCOUNT=postgres-account-slave:5432
+      - POSTGRESQL_DATABASE_ACCOUNT=database-account
     ports:
       - "3000:8080"
     depends_on:
       - postgres-transaction
+      - postgres-account-slave
     deploy:
       resources:
         limits:
@@ -54,8 +57,10 @@ services:
     image: "newbank/transaction-service"
     restart: always
     environment:
-      - POSTGRES_HOST=postgres-transaction:5432
-      - POSTGRESQL_DATABASE=database-transaction
+      - POSTGRES_HOST_TRANSACTION=postgres-transaction:5432
+      - POSTGRESQL_DATABASE_TRANSACTION=database-transaction
+      - POSTGRES_HOST_ACCOUNT=postgres-account-slave:5432
+      - POSTGRESQL_DATABASE_ACCOUNT=database-account
     ports:
       - "7001:8080"
     depends_on:
@@ -100,16 +105,38 @@ services:
           cpus: '0.50'
           memory: 300M
 
+
+  balance-service:
+    image: "newbank/balance-service"
+    restart: always
+    environment:
+      - POSTGRES_HOST=postgres-account:5432
+      - POSTGRES_HOST_MASTER=postgres-account:5432
+      - POSTGRES_HOST_SLAVE=postgres-account-slave:5432
+      - POSTGRESQL_DATABASE=database-account
+    ports:
+      - "3004:8080"
+    depends_on:
+      - postgres-account
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 300M
+
   affiliated-store-service:
     image: "newbank/affiliated-store-service"
     restart: always
     environment:
-      - POSTGRES_HOST=postgres-affiliated-store:5432
-      - POSTGRESQL_DATABASE=database-affiliated-store
+      - POSTGRES_HOST_STORE=postgres-affiliated-store:5432
+      - POSTGRESQL_DATABASE_STORE=database-affiliated-store
+      - POSTGRES_HOST_CASHBACK=postgres-cashback-slave:5432
+      - POSTGRESQL_DATABASE_CASHBACK=database-cashback
     ports:
       - "3003:8080"
     depends_on:
       - postgres-affiliated-store
+      - postgres-cashback-slave
     deploy:
       resources:
         limits:
@@ -224,7 +251,8 @@ services:
     ports:
       - "4002:5432"
     volumes:
-      - ./transaction-directory-master:/var/lib/postgresql/data
+#      - master-data:/bitnami/postgresql
+      - master-data:/var/lib/postgresql
     deploy:
       resources:
         limits:
@@ -328,3 +356,6 @@ services:
         limits:
           cpus: '0.50'
           memory: 300M
+
+volumes:
+  master-data:

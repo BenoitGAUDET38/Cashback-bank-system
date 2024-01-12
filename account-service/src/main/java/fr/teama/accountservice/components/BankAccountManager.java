@@ -10,14 +10,12 @@ import fr.teama.accountservice.interfaces.UserRegistration;
 import fr.teama.accountservice.models.BankAccount;
 import fr.teama.accountservice.models.BankUser;
 import fr.teama.accountservice.models.Card;
-import fr.teama.accountservice.models.Transaction;
 import fr.teama.accountservice.repository.BankAccountRepository;
 import fr.teama.accountservice.repository.BankUserRepository;
 import fr.teama.accountservice.repository.CardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Random;
 
 @Component
@@ -84,15 +82,6 @@ public class BankAccountManager implements UserRegistration, BankUserInformation
             throw new BankAccountNotFoundException();
         }
         return account;
-    }
-
-    @Override
-    public List<Transaction> getTransactions(String email, String password) throws BankAccountNotFoundException, InvalidAccountPasswordException {
-        //TODO add the new logic
-        return null;
-
-        //BankUser user = getBankUser(email, password);
-        //return user.getBankAccount().getCard().getTransactions();
     }
 
 }
