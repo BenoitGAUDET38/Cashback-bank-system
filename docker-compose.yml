@@ -17,6 +17,21 @@ services:
           memory: 300M
 
   # SERVICES
+  load-balancer:
+    image: "nginx:latest"
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - transaction-service
+      - transaction-service-redundancy
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 500M
 
   transaction-service:
     image: "newbank/transaction-service"
@@ -34,24 +49,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.3'
-          memory: 200M
-
-  load-balancer:
-    image: "nginx:latest"
-    restart: always
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-    depends_on:
-      - transaction-service
-      - transaction-service-redundancy
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 300M
+          cpus: '2'
+          memory: 1000M
 
   transaction-service-redundancy:
     image: "newbank/transaction-service"
@@ -68,8 +67,44 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.3'
-          memory: 200M
+          cpus: '2'
+          memory: 1000M
+
+#  transaction-service-redundancy-2:
+#    image: "newbank/transaction-service"
+#    restart: always
+#    environment:
+#      - POSTGRES_HOST_TRANSACTION=postgres-transaction:5432
+#      - POSTGRESQL_DATABASE_TRANSACTION=database-transaction
+#      - POSTGRES_HOST_ACCOUNT=postgres-account-slave:5432
+#      - POSTGRESQL_DATABASE_ACCOUNT=database-account
+#    ports:
+#      - "7002:8080"
+#    depends_on:
+#      - postgres-transaction
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '2'
+#          memory: 1000M
+#
+#  transaction-service-redundancy-3:
+#    image: "newbank/transaction-service"
+#    restart: always
+#    environment:
+#      - POSTGRES_HOST_TRANSACTION=postgres-transaction:5432
+#      - POSTGRESQL_DATABASE_TRANSACTION=database-transaction
+#      - POSTGRES_HOST_ACCOUNT=postgres-account-slave:5432
+#      - POSTGRESQL_DATABASE_ACCOUNT=database-account
+#    ports:
+#      - "7003:8080"
+#    depends_on:
+#      - postgres-transaction
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '2'
+#          memory: 1000M
 
   cashback-service:
     image: "newbank/cashback-service"
@@ -124,6 +159,96 @@ services:
           cpus: '0.50'
           memory: 300M
 
+#  balance-service-2:
+#    image: "newbank/balance-service"
+#    restart: always
+#    environment:
+#      - POSTGRES_HOST=postgres-account:5432
+#      - POSTGRES_HOST_MASTER=postgres-account:5432
+#      - POSTGRES_HOST_SLAVE=postgres-account-slave:5432
+#      - POSTGRESQL_DATABASE=database-account
+#    ports:
+#      - "3014:8080"
+#    depends_on:
+#      - postgres-account
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '0.50'
+#          memory: 300M
+#
+#  balance-service-3:
+#    image: "newbank/balance-service"
+#    restart: always
+#    environment:
+#      - POSTGRES_HOST=postgres-account:5432
+#      - POSTGRES_HOST_MASTER=postgres-account:5432
+#      - POSTGRES_HOST_SLAVE=postgres-account-slave:5432
+#      - POSTGRESQL_DATABASE=database-account
+#    ports:
+#      - "3024:8080"
+#    depends_on:
+#      - postgres-account
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '0.50'
+#          memory: 300M
+#
+#  balance-service-4:
+#    image: "newbank/balance-service"
+#    restart: always
+#    environment:
+#      - POSTGRES_HOST=postgres-account:5432
+#      - POSTGRES_HOST_MASTER=postgres-account:5432
+#      - POSTGRES_HOST_SLAVE=postgres-account-slave:5432
+#      - POSTGRESQL_DATABASE=database-account
+#    ports:
+#      - "3034:8080"
+#    depends_on:
+#      - postgres-account
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '0.50'
+#          memory: 300M
+#
+#  balance-service-5:
+#    image: "newbank/balance-service"
+#    restart: always
+#    environment:
+#      - POSTGRES_HOST=postgres-account:5432
+#      - POSTGRES_HOST_MASTER=postgres-account:5432
+#      - POSTGRES_HOST_SLAVE=postgres-account-slave:5432
+#      - POSTGRESQL_DATABASE=database-account
+#    ports:
+#      - "3044:8080"
+#    depends_on:
+#      - postgres-account
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '0.50'
+#          memory: 300M
+#
+#  balance-service-6:
+#    image: "newbank/balance-service"
+#    restart: always
+#    environment:
+#      - POSTGRES_HOST=postgres-account:5432
+#      - POSTGRES_HOST_MASTER=postgres-account:5432
+#      - POSTGRES_HOST_SLAVE=postgres-account-slave:5432
+#      - POSTGRESQL_DATABASE=database-account
+#    ports:
+#      - "3054:8080"
+#    depends_on:
+#      - postgres-account
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '0.50'
+#          memory: 300M
+
   affiliated-store-service:
     image: "newbank/affiliated-store-service"
     restart: always
@@ -163,8 +288,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.80'
-          memory: 500M
+          cpus: '0.50'
+          memory: 300M
 
   postgres-transaction-slave:
     image: 'bitnami/postgresql:latest'
